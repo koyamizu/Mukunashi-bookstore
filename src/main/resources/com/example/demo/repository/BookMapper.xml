@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.BookMapper">
+
+	<resultMap id="BookStockMap"
+		type="com.example.demo.entity.BookStock">
+		<id property="id" column="id"/>
+		<result property="stockNum" column="stock_num" />
+		<association property="book"
+			javaType="com.example.demo.entity.Book">
+			<id property="isbn" column="isbn" />
+			<result property="title" column="title" />
+			<result property="price" column="price" />
+			<result property="publish" column="publish" />
+			<result property="published" column="published" />
+		</association>
+	</resultMap>
+	
+	<select id="selectAll" resultMap="BookStockMap">
+		SELECT
+		  bs.stock_num
+		  ,bk.isbn
+		  ,bk.title
+		  ,bk.price
+		  ,bk.publish
+		  ,bk.published
+		FROM
+		  books AS bk
+		  LEFT JOIN book_stocks AS bs
+		  ON bk.isbn = bs.isbn
+		;
+	</select>
+	
+	<select id="select" resultMap="BookStockMap" parameterType="com.example.demo.entity.Item">
+		SELECT
+		  bs.stock_num
+		  ,bk.isbn
+		  ,bk.title
+		  ,bk.price
+		  ,bk.publish
+		  ,bk.published
+		FROM
+		  books AS bk
+		  INNER JOIN book_stocks AS bs
+		  ON bk.isbn = bs.isbn
+		WHERE
+		  bk.isbn = #{isbn}
+		;
+	</select>
+	
+	<select id="selectTitle" parameterType="com.example.demo.entity.Item">
+		SELECT
+		  title
+		FROM
+		  books
+		WHERE
+		  isbn = #{isbn}
+		;
+	</select>
+	
+	<update id="update" parameterType="com.example.demo.entity.BookStock">
+		UPDATE
+		  book_stocks
+		SET
+		  stock_num = #{stockNum}
+		WHERE
+		  isbn = #{book.isbn}
+		;
+	</update>
+</mapper>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>注文画面</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+		crossorigin="anonymous"></script>
+</head>
+
+<body>
+	<header>
+		<h1>椋梨書店</h1>
+	</header>
+
+	<p th:if="${message}" th:text="${message}">メッセージ</p>
+	<p th:if="${error_message}" th:text="${error_message}">エラーメッセージ</p>
+
+	<a th:href="@{/kadai/bookController}">戻る</a>
+	<div th:if="${#lists.isEmpty(itemsInCart)}">
+		<p>カートに入っているものはありません</p>
+	</div>
+	<div th:unless="${#lists.isEmpty(itemsInCart)}">
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>書名</th>
+					<th>価格</th>
+					<th>冊数</th>
+					<th>小計</th>
+				</tr>
+			</thead>
+			<tbody>
+				<div th:each="item:${itemsInCart}" th:object="${item}">
+					<tr>
+						<td th:text="*{title}"></td>
+						<td th:text="*{price}"></td>
+						<td th:text="*{num}"></td>
+						<td th:text="*{#aggregates.sum({price * num})}"></td>
+					</tr>
+				</div>
+				<tr class="table-primary">
+					<td><strong>合計</strong></td>
+					<td></td>
+					<td><strong th:text="${#aggregates.sum(itemsInCart.![num])}"></strong>
+					</td>
+					<td><strong th:text="${#aggregates.sum(itemsInCart.![price * num])}"></strong></td>
+				</tr>
+			</tbody>
+		</table>
+		<h3>お届け先</h3>
+		<form th:action="@{/kadai/bookController/order/execute}" th:object="${customerForm}">
+			<div class="mb-3">
+			  <label for="name" class="form-label">お名前</label>
+			  <input type="text" th:field="*{name}" class="form-control" id="name" placeholder="椋梨健">
+			</div>
+			<div class="mb-3">
+			  <label for="tel" class="form-label">電話番号</label>
+			  <input type="tel" th:field="*{tel}" textarea class="form-control" id="tel" ></input>
+			</div>
+		</form>
+	</div>
+</body>
+
+</html>
