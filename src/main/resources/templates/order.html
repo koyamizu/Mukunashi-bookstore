@@ -34,7 +34,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<div th:each="item:${itemsInCart}" th:object="${item}">
+				<div th:each="Cart:${itemsInCart}" th:object="${Cart}">
 					<tr>
 						<td th:text="*{title}"></td>
 						<td th:text="*{price}"></td>

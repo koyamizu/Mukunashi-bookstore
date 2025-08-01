@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +14,7 @@ public class Book {
 	private String isbn;
 	private String title;
 	private int price;
-	private String publish;
-	private String published;
+	private String publisher;
+	private LocalDate published;
 	
 }

@@ -31,7 +31,7 @@
 		;
 	</select>
 	
-	<select id="select" resultMap="BookStockMap" parameterType="com.example.demo.entity.Item">
+	<select id="select" resultMap="BookStockMap" parameterType="com.example.demo.entity.Cart">
 		SELECT
 		  bs.stock_num
 		  ,bk.isbn
@@ -48,7 +48,7 @@
 		;
 	</select>
 	
-	<select id="selectTitle" parameterType="com.example.demo.entity.Item">
+	<select id="selectTitle" parameterType="com.example.demo.entity.Book">
 		SELECT
 		  title
 		FROM

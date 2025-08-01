@@ -39,10 +39,11 @@
 				<td th:text="*{book.published}"></td>
 				<td th:text="*{stockNum}"></td>
 				<td>
-					<form method="post" th:action="@{/kadai/bookController/add}">
-						<input type="hidden" name="isbn" th:value="${bookStock.book.isbn}">
-						<input type="hidden" name="price" th:value="${bookStock.book.price}">
-						<input type="text" name="num" size="5" required>
+					<form method="post" th:action="@{/kadai/bookController/add}" th:object="cartForm">
+						<input type="hidden" th:field="*{isbn}" th:value="${bookStock.book.isbn}">
+						<input type="hidden" th:field="*{title}" th:value="${bookStock.book.title}">
+						<input type="hidden" th:field="*{price}" th:value="${bookStock.book.price}">
+						<input type="text" th:field="*{num}" size="2" required>
 						<input type="submit" value="カートに入れる">
 					</form>
 				</td>

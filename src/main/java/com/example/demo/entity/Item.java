@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Item {
 
-	private String isbn;
-	private String title;
+	private Book book;
 	private int num;
-	private int price;
 }

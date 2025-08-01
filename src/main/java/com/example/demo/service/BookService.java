@@ -10,7 +10,7 @@ import com.example.demo.form.ItemForm;
 
 public interface BookService {
 
-	List<BookStock> getAllBookStocks(Optional<List<Item>> itemsInCartNullable);
+	List<BookStock> getAllBookStocks(Optional<List<Item>> itemsInCartNullable) throws IlligalActionException;
 	
 	List<Item> addItem(ItemForm itemForm, Optional<List<Item>> itemsInCartNullable) throws IlligalActionException;
 

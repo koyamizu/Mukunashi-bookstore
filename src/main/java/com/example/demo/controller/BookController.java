@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import jakarta.servlet.http.HttpSession;
@@ -16,8 +18,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.demo.entity.BookStock;
 import com.example.demo.entity.Item;
 import com.example.demo.exception.IlligalActionException;
-import com.example.demo.form.CustomerForm;
 import com.example.demo.form.ItemForm;
+import com.example.demo.form.CustomerForm;
 import com.example.demo.service.BookService;
 
 import lombok.RequiredArgsConstructor;
@@ -32,26 +34,26 @@ public class BookController {
 	private final BookService bookService;
 
 	@GetMapping
-	public String showTimeSale(Model model,HttpSession session) {
+	public String showTimeSale(Model model,HttpSession session) throws IlligalActionException {
 		//sessionで保持していた、カートにある商品情報を取り出す。Optional.ofNullableメソッドでNull安全性を付与することで、
 		//仮にitemsInCartがnullだったとしても、NullPointerExceptionにはならない。
 		@SuppressWarnings("unchecked")
-		Optional<List<Item>> itemsInCart = Optional.ofNullable((List<Item>) session.getAttribute("cart"));
+		Optional<List<Item>> cart = Optional.ofNullable((List<Item>) session.getAttribute("cart"));
 //		すべての書籍の在庫情報を取得
-		List<BookStock> bookStocks = bookService.getAllBookStocks(itemsInCart);
+		List<BookStock> bookStocks = bookService.getAllBookStocks(cart);
 //		カートに入れる商品情報を入力するフォームを作成
-		ItemForm itemForm = new ItemForm();
+		ItemForm cartForm = new ItemForm();
 		
 		model.addAttribute("bookStocks", bookStocks);
-		model.addAttribute("itemForm", itemForm);
+		model.addAttribute("cartForm", cartForm);
 		return "time-sale";
 	}
 
 	@PostMapping("add")
-	public String addItem(ItemForm itemForm,HttpSession session,
+	public String addItem(ItemForm cartForm,HttpSession session,
 			RedirectAttributes attributes) {
 		//値の正当性を判断。isValidateメソッドは独自に作成したItemFormクラスのインスタンスメソッド。
-		if (!itemForm.isValidate()) {
+		if (!cartForm.isValidate()) {
 			attributes.addFlashAttribute("error_message", "1以上の数を入力してください");
 			return "redirect:/kadai/bookController";
 		}
@@ -59,13 +61,13 @@ public class BookController {
 		//sessionで保持していた、カートにある商品情報を取り出す。Optional.ofNullableメソッドでNull安全性を付与することで、
 		//仮にitemsInCartがnullだったとしても、NullPointerExceptionにはならない。
 		@SuppressWarnings("unchecked")
-		Optional<List<Item>> itemsInCart = Optional.ofNullable((List<Item>) session.getAttribute("cart"));
+		Optional<List<Item>> cart = Optional.ofNullable((List<Item>) session.getAttribute("cart"));
 
 		try {
 //			カートに商品を追加し、追加した後の最新版のカート情報をupdatedItemsInCartオブジェクトに代入する。
-			List<Item> updatedItemsInCart = bookService.addItem(itemForm, itemsInCart);
+			List<Item> updatedCart = bookService.addItem(cartForm, cart);
 //			セッション情報を更新
-			session.setAttribute("cart", updatedItemsInCart);
+			session.setAttribute("cart", updatedCart);
 //			リダイレクト後にトップページ上で表示するメッセージを設定
 			attributes.addFlashAttribute("message", "カートに商品を追加しました");
 //			在庫数以上の冊数を追加しようとした時、IlligalActionExceptionがaddItemメソッドから放出される
@@ -81,11 +83,16 @@ public class BookController {
 		//sessionで保持していた、カートにある商品情報を取り出す。Optional.ofNullableメソッドでNull安全性を付与することで、
 		//仮にitemsInCartがnullだったとしても、NullPointerExceptionにはならない。
 		@SuppressWarnings("unchecked")
-		Optional<List<Item>> itemsInCartNullable = Optional.ofNullable((List<Item>) session.getAttribute("cart"));
+		Optional<List<Item>> cartNullable = Optional.ofNullable((List<Item>) session.getAttribute("cart"));
 //		カートに商品が一つもなければ空のリストを生成（NullPointerException対策）
 //		カートの商品 or 空のリストがitemsInCartに代入される
-		List<Item> itemsInCart=itemsInCartNullable.orElse(new ArrayList<Item>());
-		model.addAttribute("itemsInCart",itemsInCart);
+		List<Item> cart=cartNullable.orElse(new ArrayList<Item>());
+		
+		Map<Item,Integer> itemsMap=new HashMap<Item,Integer>();
+//		itemsMap.
+		
+		
+		model.addAttribute("cart",cart);
 		model.addAttribute("customerForm",customerForm);
 		return "order";
 	}

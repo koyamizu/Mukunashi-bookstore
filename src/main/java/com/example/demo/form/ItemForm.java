@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class ItemForm {
 
 	private String isbn;
-	//	@Min(value=1, message = "注文数は1以上の数を入力してください")
+	private String title;
 	private int num;
 	private int price;
 
