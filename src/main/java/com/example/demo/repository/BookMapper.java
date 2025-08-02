@@ -6,16 +6,15 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.example.demo.entity.Book;
 import com.example.demo.entity.BookStock;
-import com.example.demo.entity.Item;
 
 @Mapper
 public interface BookMapper {
 	
 	List<BookStock> selectAll();
 	
-	BookStock select(Item Cart);
+	Book select(String isbn);
 	
-	String selectTitle(Book book);
+	Integer selectStockNum(String isbn);
 	
 	void update(BookStock bookStock);
 }

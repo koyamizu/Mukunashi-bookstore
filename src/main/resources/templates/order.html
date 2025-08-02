@@ -20,10 +20,10 @@
 	<p th:if="${error_message}" th:text="${error_message}">エラーメッセージ</p>
 
 	<a th:href="@{/kadai/bookController}">戻る</a>
-	<div th:if="${#lists.isEmpty(itemsInCart)}">
+	<div th:if="${#lists.isEmpty(cart)}">
 		<p>カートに入っているものはありません</p>
 	</div>
-	<div th:unless="${#lists.isEmpty(itemsInCart)}">
+	<div th:unless="${#lists.isEmpty(cart)}">
 		<table class="table table-bordered">
 			<thead>
 				<tr>
@@ -34,32 +34,32 @@
 				</tr>
 			</thead>
 			<tbody>
-				<div th:each="Cart:${itemsInCart}" th:object="${Cart}">
+				<div th:each="item:${cart}">
 					<tr>
-						<td th:text="*{title}"></td>
-						<td th:text="*{price}"></td>
-						<td th:text="*{num}"></td>
-						<td th:text="*{#aggregates.sum({price * num})}"></td>
+						<td th:text="${item.key}"></td>
+						<td th:text="*{key.price}"></td>
+						<td th:text="*{value}"></td>
+						<td th:text="*{#aggregates.sum({book.price * value})}"></td>
 					</tr>
 				</div>
-				<tr class="table-primary">
-					<td><strong>合計</strong></td>
-					<td></td>
-					<td><strong th:text="${#aggregates.sum(itemsInCart.![num])}"></strong>
-					</td>
-					<td><strong th:text="${#aggregates.sum(itemsInCart.![price * num])}"></strong></td>
-				</tr>
+<!--				<tr class="table-primary">-->
+<!--					<td><strong>合計</strong></td>-->
+<!--					<td></td>-->
+<!--					<td><strong th:text="${#aggregates.sum(itemsInCart.![num])}"></strong>-->
+<!--					</td>-->
+<!--					<td><strong th:text="${#aggregates.sum(itemsInCart.![price * num])}"></strong></td>-->
+<!--				</tr>-->
 			</tbody>
 		</table>
 		<h3>お届け先</h3>
 		<form th:action="@{/kadai/bookController/order/execute}" th:object="${customerForm}">
 			<div class="mb-3">
 			  <label for="name" class="form-label">お名前</label>
-			  <input type="text" th:field="*{name}" class="form-control" id="name" placeholder="椋梨健">
+			  <input type="text" th:field="*{name}" class="form-control" placeholder="椋梨健">
 			</div>
 			<div class="mb-3">
 			  <label for="tel" class="form-label">電話番号</label>
-			  <input type="tel" th:field="*{tel}" textarea class="form-control" id="tel" ></input>
+			  <input type="tel" th:field="*{tel}" textarea class="form-control"></input>
 			</div>
 		</form>
 	</div>

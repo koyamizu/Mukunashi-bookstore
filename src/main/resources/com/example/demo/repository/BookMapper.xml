@@ -11,7 +11,7 @@
 			<id property="isbn" column="isbn" />
 			<result property="title" column="title" />
 			<result property="price" column="price" />
-			<result property="publish" column="publish" />
+			<result property="publisher" column="publisher" />
 			<result property="published" column="published" />
 		</association>
 	</resultMap>
@@ -22,7 +22,7 @@
 		  ,bk.isbn
 		  ,bk.title
 		  ,bk.price
-		  ,bk.publish
+		  ,bk.publisher
 		  ,bk.published
 		FROM
 		  books AS bk
@@ -31,28 +31,25 @@
 		;
 	</select>
 	
-	<select id="select" resultMap="BookStockMap" parameterType="com.example.demo.entity.Cart">
+	<select id="select" parameterType="String" resultType="com.example.demo.entity.Book">
 		SELECT
-		  bs.stock_num
-		  ,bk.isbn
-		  ,bk.title
-		  ,bk.price
-		  ,bk.publish
-		  ,bk.published
+		  isbn
+		  ,title
+		  ,price
+		  ,publisher
+		  ,published
 		FROM
-		  books AS bk
-		  INNER JOIN book_stocks AS bs
-		  ON bk.isbn = bs.isbn
+		  books
 		WHERE
-		  bk.isbn = #{isbn}
+		  isbn = #{isbn}
 		;
 	</select>
 	
-	<select id="selectTitle" parameterType="com.example.demo.entity.Book">
+	<select id="selectStockNum" parameterType="String">
 		SELECT
-		  title
+		  stock_num
 		FROM
-		  books
+		  book_stocks
 		WHERE
 		  isbn = #{isbn}
 		;

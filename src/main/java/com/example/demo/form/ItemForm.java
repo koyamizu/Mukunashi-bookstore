@@ -10,11 +10,12 @@ import lombok.NoArgsConstructor;
 public class ItemForm {
 
 	private String isbn;
-	private String title;
+//	private String title;
 	private int num;
-	private int price;
+//	private int price;
 
-	public Boolean isValidate(){
+	public Boolean isValidate() {
 		return this.num > 0;
 	}
+
 }

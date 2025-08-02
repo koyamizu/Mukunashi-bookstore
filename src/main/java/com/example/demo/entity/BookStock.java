@@ -10,14 +10,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookStock {
-	
+
 	private Book book;
 	private int stockNum;
-	
-	public BookStock updateStockNum(int addNum) throws IlligalActionException {
-		if(stockNum-addNum<0) {
+
+	public void updateStockNum(int addNum) throws IlligalActionException {
+		if (stockNum - addNum < 0) {
 			throw new IlligalActionException("在庫がありません");
 		}
-		return new BookStock(book,stockNum-addNum);
+		stockNum -= addNum;
 	}
 }

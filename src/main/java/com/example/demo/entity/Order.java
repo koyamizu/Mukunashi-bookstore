@@ -1,7 +1,5 @@
 package com.example.demo.entity;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class Order {
 
 	private Customer customer;
-	private List<Item> items;
+	private Cart cart;
 }

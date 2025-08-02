@@ -2,7 +2,7 @@ CREATE TABLE books(
   isbn CHAR(17) PRIMARY KEY
   ,title VARCHAR(100) NOT NULL
   ,price INT NOT NULL
-  ,publish VARCHAR(20) NOT NULL
+  ,publisher VARCHAR(20) NOT NULL
   ,published DATE NOT NULL
 );
 
