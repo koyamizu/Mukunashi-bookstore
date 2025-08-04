@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,12 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Item {
+public class History {
 
-	private Book book;
-	private Integer num;
-	
-	public Boolean isValidate(int stockNum) {
-		return this.num <= stockNum;
-	}
+	private Integer orderId;
+	private Customer customer;
+	private List<Item> items;
 }

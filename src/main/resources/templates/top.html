@@ -16,42 +16,45 @@
 		<h1>椋梨書店</h1>
 	</header>
 
-	<p th:if="${message}" th:text="${message}">メッセージ</p>
-	<p th:if="${error_message}" th:text="${error_message}">エラーメッセージ</p>
-	
-	<table class="table table-bordered">
-		<thead>
-			<tr>
-				<th>書名</th>
-				<th>価格</th>
-				<th>出版社</th>
-				<th>刊行年月日</th>
-				<th>在庫数量</th>
-				<th>購入冊数</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="bookStock:${bookStocks}" th:object="${bookStock}">
-				<td th:text="*{book.title}"></td>
-				<td th:text="*{book.price}"></td>
-				<td th:text="*{book.publisher}"></td>
-				<td th:text="*{book.published}"></td>
-				<td th:text="*{stockNum}"></td>
-				<td>
-<!--					<form method="post" th:action="@{/kadai/bookController/add}" th:object="${itemForm}">-->
-					<form method="post" th:action="@{/kadai/bookController/add}">
-						<input type="hidden" name="isbn" th:value="${bookStock.book.isbn}">
-<!--						<input type="hidden" name="title" th:value="${bookStock.book.title}">-->
-<!--						<input type="hidden" name="price" th:value="${bookStock.book.price}">-->
-						<input type="text" name="num" size="2" required>
-						<input type="submit" value="カートに入れる">
-					</form>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	<a th:href="@{/kadai/bookController/order}">注文画面へ</a>
+	<div class="container">
+		<p th:if="${message}" th:text="${message}" class="text-primary">メッセージ</p>
+		<p th:if="${error_message}" th:text="${error_message}" class="text-danger">エラーメッセージ</p>
+
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>書名</th>
+					<th>価格</th>
+					<th>出版社</th>
+					<th>刊行年月日</th>
+					<th>在庫数量</th>
+					<th>購入冊数</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="bookStock:${bookStocks}" th:object="${bookStock}">
+					<td th:text="*{book.title}"></td>
+					<td th:text="*{book.price}"></td>
+					<td th:text="*{book.publisher}"></td>
+					<td th:text="*{book.published}"></td>
+					<td th:text="*{stockNum}"></td>
+					<td>
+						<form method="post" th:action="@{/kadai/bookController/add}">
+							<input type="hidden" name="isbn" th:value="${bookStock.book.isbn}">
+							<input type="text" name="num" size="3" required  class="mx-2">
+							<input type="submit" value="カートに入れる">
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<a th:href="@{/kadai/bookController/order}">注文画面へ</a>
+		<form th:action="@{/kadai/bookController/history}" method="GET">
+			<label for="order-id">注文番号：</label>
+			<input type="text" id="order-id" name="order-id" required></input>
+			<input type="submit" value="注文履歴を表示"></input>
+		</form>
+	</div>
 </body>
 
 </html>

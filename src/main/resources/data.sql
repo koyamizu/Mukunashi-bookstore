@@ -1,4 +1,4 @@
-INSERT INTO books
+INSERT INTO books(isbn,title,price,publisher,published)
 VALUES
   ('978-4-8222-5391-2', 'iPhoneアプリ超入門', 2200, '日経BP', '2020-02-28')
   ,('978-4-7981-6365-9', '独習ASP.NET Webフォーム', 3800, '翔泳社', '2020-02-17')
@@ -12,7 +12,8 @@ VALUES
   ,('978-4-7981-5757-3', 'JavaScript逆引きレシピ', 2730, '翔泳社', '2018-10-15')
 ;
 
-INSERT INTO book_stocks VALUES
+INSERT INTO book_stocks(isbn,stock_num)
+VALUES
   ('978-4-8222-5391-2', 12)
   ,('978-4-7981-6365-9', 7)
   ,('978-4-8222-8653-8', 15)

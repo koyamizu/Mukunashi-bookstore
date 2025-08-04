@@ -16,52 +16,72 @@
 		<h1>椋梨書店</h1>
 	</header>
 
-	<p th:if="${message}" th:text="${message}">メッセージ</p>
-	<p th:if="${error_message}" th:text="${error_message}">エラーメッセージ</p>
+	<div class="container">
+		<p th:if="${message}" th:text="${message}" class="text-primary">メッセージ</p>
+		<p th:if="${error_message}" th:text="${error_message}" class="text-danger">エラーメッセージ</p>
 
-	<a th:href="@{/kadai/bookController}">戻る</a>
-	<div th:if="${#lists.isEmpty(cart)}">
-		<p>カートに入っているものはありません</p>
-	</div>
-	<div th:unless="${#lists.isEmpty(cart)}">
-		<table class="table table-bordered">
-			<thead>
-				<tr>
-					<th>書名</th>
-					<th>価格</th>
-					<th>冊数</th>
-					<th>小計</th>
-				</tr>
-			</thead>
-			<tbody>
-				<div th:each="item:${cart}">
+		<a th:href="@{/kadai/bookController}">戻る</a>
+		<div th:if="${#maps.isEmpty(cart)}">
+			<p>カートに入っているものはありません</p>
+		</div>
+		<div th:unless="${#maps.isEmpty(cart)}">
+			<table class="table table-bordered">
+				<thead>
 					<tr>
-						<td th:text="${item.key}"></td>
-						<td th:text="*{key.price}"></td>
-						<td th:text="*{value}"></td>
-						<td th:text="*{#aggregates.sum({book.price * value})}"></td>
+						<th>書名</th>
+						<th>価格</th>
+						<th>冊数</th>
+						<th>小計</th>
 					</tr>
+				</thead>
+				<tbody>
+					<div th:each="item:${cart}" th:object="${item}">
+						<tr>
+							<td th:text="*{key.title}"></td>
+							<td th:text="*{key.price}"></td>
+							<td th:text="*{value}"></td>
+							<td th:text="*{#aggregates.sum({key.price * value})}"></td>
+						</tr>
+					</div>
+					<tr class="table-primary">
+						<td><strong>合計</strong></td>
+						<td></td>
+						<td><strong th:text="${#aggregates.sum(cart.![value])}"></strong>
+						</td>
+						<td><strong th:text="${#aggregates.sum(cart.![key.price * value])}"></strong></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<form th:action="@{/kadai/bookController/order/execute}" th:object="${customerForm}" class="container"
+				method="POST">
+				<p th:if="${#fields.hasErrors('*')}" th:each="err:${#fields.errors('*')}" th:text="${err}"
+					class="text-danger">
+					エラーメッセージ
+				</p>
+				<h3>お届け先</h3>
+				<div class="row">
+					<div class="col-sm">
+						<label for="name" class="form-label">お名前</label>
+						<input type="text" th:field="*{name}" class="form-control" placeholder="例：田中あさひ">
+					</div>
+					<div class="col-sm">
+						<label for="tel" class="form-label">電話番号</label>
+						<input type="text" th:field="*{tel}" class="form-control" placeholder="例：030-1234-5678"></input>
+					</div>
 				</div>
-<!--				<tr class="table-primary">-->
-<!--					<td><strong>合計</strong></td>-->
-<!--					<td></td>-->
-<!--					<td><strong th:text="${#aggregates.sum(itemsInCart.![num])}"></strong>-->
-<!--					</td>-->
-<!--					<td><strong th:text="${#aggregates.sum(itemsInCart.![price * num])}"></strong></td>-->
-<!--				</tr>-->
-			</tbody>
-		</table>
-		<h3>お届け先</h3>
-		<form th:action="@{/kadai/bookController/order/execute}" th:object="${customerForm}">
-			<div class="mb-3">
-			  <label for="name" class="form-label">お名前</label>
-			  <input type="text" th:field="*{name}" class="form-control" placeholder="椋梨健">
-			</div>
-			<div class="mb-3">
-			  <label for="tel" class="form-label">電話番号</label>
-			  <input type="tel" th:field="*{tel}" textarea class="form-control"></input>
-			</div>
-		</form>
+				<div class="col-sm-2">
+					<label for="postNum" class="form-label">郵便番号</label>
+					<input type="text" th:field="*{postNum}" class="form-control" placeholder="例：101-1234"></input>
+				</div>
+				<div class="col-sm">
+					<label for="address" class="form-label">住所</label>
+					<input type="text" th:field="*{address}" class="form-control"
+						placeholder="例：東京都西区椋梨2-1-4 ミルプレス椋梨203号室"></input>
+				</div>
+				<input type="submit" value="注文確定" class="mt-3">
+			</form>
+		</div>
 	</div>
 </body>
 

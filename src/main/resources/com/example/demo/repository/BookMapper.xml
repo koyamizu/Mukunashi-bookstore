@@ -4,6 +4,7 @@
 
 	<resultMap id="BookStockMap"
 		type="com.example.demo.entity.BookStock">
+<!--	idカラムはstock_numが主キーに設定されないようにするためのダミー-->
 		<id property="id" column="id"/>
 		<result property="stockNum" column="stock_num" />
 		<association property="book"
@@ -14,6 +15,27 @@
 			<result property="publisher" column="publisher" />
 			<result property="published" column="published" />
 		</association>
+	</resultMap>
+	
+	<resultMap id="OrderHistoryMap" type="com.example.demo.entity.History">
+		<id property="orderId" column="order_id"/>
+		<association property="customer" javaType="com.example.demo.entity.Customer">
+			<id property="id" column="customer_id"/>
+			<result property="name" column="name"/>
+			<result property="tel" column="tel"/>
+			<result property="postNum" column="post_num"/>
+			<result property="address" column="address"/>
+		</association>
+		<collection property="items" ofType="com.example.demo.entity.Item">
+			<result property="num" column="num"/>
+			<association property="book" javaType="com.example.demo.entity.Book">
+				<id property="isbn" column="isbn" />
+				<result property="title" column="title" />
+				<result property="price" column="price" />
+				<result property="publisher" column="publisher" />
+				<result property="published" column="published" />
+			</association>
+		</collection>
 	</resultMap>
 	
 	<select id="selectAll" resultMap="BookStockMap">
@@ -55,13 +77,95 @@
 		;
 	</select>
 	
-	<update id="update" parameterType="com.example.demo.entity.BookStock">
+	<select id="selectCustomerId" parameterType="com.example.demo.entity.Customer">
+		SELECT
+		  customer_id
+		FROM
+		  customers
+		WHERE
+		  tel = #{tel}
+		;
+	</select>
+		
+	<select id="selectOrderId">
+		SELECT
+		  order_id
+		FROM
+		  order_histories
+		WHERE
+		  customer_id = #{customerId}
+		  AND
+		  CAST(created_at AS DATE) = #{orderDate};
+		;
+	</select>
+	
+	<select id="selectOrderHistory" resultMap="OrderHistoryMap">
+		SELECT
+		  o.order_id
+		  ,c.name
+		  ,c.tel
+		  ,c.post_num
+		  ,c.address
+		  ,b.isbn
+		  ,b.title
+		  ,b.price
+		  ,b.publisher
+		  ,b.published
+		  ,i.num
+		FROM
+		  order_histories AS o
+		  INNER JOIN order_items AS i
+		  ON o.order_id = i.order_id
+		  INNER JOIN customers AS c
+		  ON o.customer_id = c.customer_id
+		  INNER JOIN books AS b
+		  ON i.isbn = b.isbn
+		WHERE
+		  o.order_id = #{orderId}
+		;
+	</select>
+	
+	<update id="update">
 		UPDATE
 		  book_stocks
 		SET
-		  stock_num = #{stockNum}
+		  stock_num = #{updatedStockNum}
 		WHERE
-		  isbn = #{book.isbn}
+		  isbn = #{isbn}
 		;
 	</update>
+	
+	<insert id="insertCustomer" parameterType="com.example.demo.entity.Customer">
+		INSERT INTO
+		  customers(name,tel,post_num,address)
+		VALUES
+		  (#{name},#{tel},#{postNum},#{address})
+		;
+	</insert>
+	
+	<insert id="insertOrder" parameterType="Integer">
+		INSERT INTO
+		  order_histories(customer_id)
+		VALUES
+		  (#{customerId})
+		;
+	</insert>
+	
+	<insert id="insertItems">
+		INSERT INTO
+		  order_items(order_id,isbn,num)
+		VALUES
+		  <foreach collection="itemSet" index="key" item="value" separator=",">
+			  (#{orderId},#{key.isbn},#{value})
+		  </foreach>
+		;
+	</insert>
+	
+	<delete id="deleteOrder">
+		DELETE FROM
+		  order_histories
+		WHERE
+		  order_id = #{orderId}
+		;
+	</delete>
 </mapper>
