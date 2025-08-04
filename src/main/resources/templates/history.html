@@ -11,13 +11,15 @@
 		crossorigin="anonymous"></script>
 </head>
 
+<!--		【？】に適切なThymeleaf式を書いてください-->
 <body>
 	<header>
 		<h1>椋梨書店</h1>
 	</header>
 	<h2>注文履歴</h2>
 	<div class="container">
-		<a th:href="@{/kadai/bookController}">戻る</a>
+<!--		「/kadai/bookController」というページへの遷移-->
+		<a 【？】>戻る</a>
 		<table class="table table-bordered">
 			<thead>
 				<tr>
@@ -30,13 +32,15 @@
 				</tr>
 			</thead>
 			<tbody>
-				<div th:each="item:${items}" th:object="${item}">
+<!--				リストの繰り返し表示-->
+				<div 【？】 【？】>
 					<tr>
-						<td th:text="*{book.title}"></td>
-						<td th:text="*{book.price}"></td>
-						<td th:text="*{book.publisher}"></td>
-						<td th:text="*{book.published}"></td>
-						<td th:text="*{num}"></td>
+<!--						内容の表示-->
+						<td 【？】></td>
+						<td 【？】></td>
+						<td 【？】></td>
+						<td 【？】></td>
+						<td 【？】></td>
 						<td th:text="*{#aggregates.sum({book.price * num})}"></td>
 					</tr>
 				</div>
@@ -54,22 +58,7 @@
 
 		<h3>お届け先</h3>
 		<table class="table table-bordered">
-			<tr>
-				<th for="name" class="form-label">お名前</th>
-				<td th:text="${customer.name}"></td>
-			</tr>
-			<tr>
-				<th for="tel" class="form-label">電話番号</th>
-				<td th:text="${customer.tel}"></td>
-			</tr>
-			<tr>
-				<th for="postNum" class="form-label">郵便番号</th>
-				<td th:text="${customer.postNum}"></td>
-			</tr>
-			<tr>
-				<th for="address" class="form-label">住所</th>
-				<td th:text="${customer.address}"></td>
-			</tr>
+<!--			お名前、電話番号、郵便番号、住所という項目名を持った表を完成させてください-->
 		</table>
 		<a th:href="@{/kadai/bookController/history/{order-id}/delete(order-id = ${orderId})}">
 			注文取り消し

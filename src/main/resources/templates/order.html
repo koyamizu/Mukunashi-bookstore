@@ -17,14 +17,13 @@
 	</header>
 
 	<div class="container">
-		<p th:if="${message}" th:text="${message}" class="text-primary">メッセージ</p>
-		<p th:if="${error_message}" th:text="${error_message}" class="text-danger">エラーメッセージ</p>
 
 		<a th:href="@{/kadai/bookController}">戻る</a>
-		<div th:if="${#maps.isEmpty(cart)}">
+<!--		適切な属性名と要素をそれぞれ記入し、cart(Map)が空の場合と空ではない場合で表示内容を変更してください-->
+		<div ？="">
 			<p>カートに入っているものはありません</p>
 		</div>
-		<div th:unless="${#maps.isEmpty(cart)}">
+		<div ？="">
 			<table class="table table-bordered">
 				<thead>
 					<tr>
@@ -35,12 +34,14 @@
 					</tr>
 				</thead>
 				<tbody>
-					<div th:each="item:${cart}" th:object="${item}">
+<!--					繰り返しと参照のための属性名を書いてください-->
+					<div ？="item:${cart}" ？="${item}">
 						<tr>
-							<td th:text="*{key.title}"></td>
-							<td th:text="*{key.price}"></td>
-							<td th:text="*{value}"></td>
-							<td th:text="*{#aggregates.sum({key.price * value})}"></td>
+<!--							内容を表示するための属性名を書いてください-->
+							<td ？="*{key.title}"></td>
+							<td ？="*{key.price}"></td>
+							<td ？="*{value}"></td>
+							<td ？="*{#aggregates.sum({key.price * value})}"></td>
 						</tr>
 					</div>
 					<tr class="table-primary">
@@ -53,8 +54,9 @@
 				</tbody>
 			</table>
 
-			<form th:action="@{/kadai/bookController/order/execute}" th:object="${customerForm}" class="container"
-				method="POST">
+<!--			フォームデータを送信するために必要な属性名が2つ欠けているので記入してください-->
+			<form ？="@{/kadai/bookController/order/execute}" th:object="${customerForm}" class="container"
+				？>
 				<p th:if="${#fields.hasErrors('*')}" th:each="err:${#fields.errors('*')}" th:text="${err}"
 					class="text-danger">
 					エラーメッセージ

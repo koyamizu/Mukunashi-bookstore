@@ -32,15 +32,18 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="bookStock:${bookStocks}" th:object="${bookStock}">
-					<td th:text="*{book.title}"></td>
-					<td th:text="*{book.price}"></td>
-					<td th:text="*{book.publisher}"></td>
-					<td th:text="*{book.published}"></td>
-					<td th:text="*{stockNum}"></td>
+<!--				th:each,th:object,th:textにそれぞれ適切な値を入れてください-->
+				<tr th:each="" th:object="">
+					<td th:text=""></td>
+					<td th:text=""></td>
+					<td th:text=""></td>
+					<td th:text=""></td>
+					<td th:text=""></td>
 					<td>
-						<form method="post" th:action="@{/kadai/bookController/add}">
-							<input type="hidden" name="isbn" th:value="${bookStock.book.isbn}">
+<!--					th:actionに適切な値を入れてください-->
+						<form method="post" th:action="">
+<!--							th:valueに適切な値を入れてください-->
+							<input type="hidden" name="isbn" th:value="">
 							<input type="text" name="num" size="3" required  class="mx-2">
 							<input type="submit" value="カートに入れる">
 						</form>
