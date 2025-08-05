@@ -31,7 +31,7 @@
 		</collection>
 	</resultMap>
 	
-	<select id="" <!-- ここにresultMapを記述 -->>
+	<select id="ここにメソッド名を記述" <!-- ここにresultMapを記述 -->>
 		SELECT
 		  bs.stock_num
 		  ,bk.isbn
@@ -46,7 +46,7 @@
 		;
 	</select>
 	
-	<select id="select" <!-- ここにparameterTypeを記述--> <!--  ここにresultTypeを記述-->>
+	<select id="ここにメソッド名を記述" <!-- ここにparameterTypeを記述--> <!--  ここにresultTypeを記述-->>
 		SELECT
 		  isbn
 		  ,title

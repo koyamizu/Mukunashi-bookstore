@@ -47,7 +47,7 @@ public class BookController {
 		//		sessionで保持していた、カートにある商品情報を取り出す。
 		Cart cart = (Cart) session.getAttribute("cart");
 		//			すべての書籍の在庫情報を取得
-		List<BookStock> bookStocks = bookService.getAllBookStocks(cart);
+		List<BookStock> bookStocks = bookService.cartの情報をもとに、全ての書籍を取得するメソッド;
 		//			modelに格納
 		model.addAttribute("bookStocks", bookStocks);
 		return "top";
@@ -61,7 +61,7 @@ public class BookController {
 
 		Item item = ItemConverter.convertItem(itemForm);
 		//			カートに商品を追加し、追加した後の最新版のカート情報をupdatedCartオブジェクトに格納する。
-		Cart updatedCart = bookService.addItem(item, cart);
+		Cart updatedCart = bookService.cartとitemをもとに、商品を追加するメソッド;
 		//			セッション情報を更新
 		session.setAttribute("cart", updatedCart);
 		//			リダイレクト後にトップページ上で表示するメッセージを設定
@@ -73,8 +73,16 @@ public class BookController {
 	}
 
 	@GetMapping("cart")
-	public String showCart(CustomerForm customerForm, Model model, HttpSession session) {
-		//		sessionで保持していた、カートにある商品情報を取り出す。Null安全性を保証。
+	public String showCart(@Validated CustomerForm customerForm,BindingResult bindingResult,
+			Model model, HttpSession session) throws IlligalActionException {
+		
+		if(bindingResult.hasErrors()) {
+			Cart cart = (Cart) session.getAttribute("cart");
+			List<BookStock> bookStocks = bookService.cartの情報をもとに、全ての書籍を取得するメソッド;
+			model.addAttribute("bookStocks", bookStocks);
+			return "top";
+		}
+		//		sessionで保持していた、カートにある商品情報を取り出す。
 		Cart cart = (Cart) session.getAttribute("cart");
 		model.addAttribute("cart", cart);
 		model.addAttribute("customerForm", customerForm);
@@ -98,7 +106,7 @@ public class BookController {
 		Customer customer = CustomerConverter.convertCustomer(customerForm);
 
 		Order order = new Order(customer, cart);
-		Integer orderId = bookService.executeOrder(order);
+		Integer orderId = bookService.orderをもとに、注文を実行するメソッド;
 		//			sessionで保持していたカートの情報を削除
 		session.removeAttribute("cart");
 		//			リダイレクト後にトップページ上で表示するメッセージを設定
@@ -112,7 +120,7 @@ public class BookController {
 	//	「http://localhost:8080/history?order-id=〇〇」の〇〇の部分（GETのリクエストパラメータ）を取得
 	public String showHistoryTop(@RequestParam("order-id") Integer orderId, Model model,
 			RedirectAttributes attributes) throws NoHistoryException {
-		History history = bookService.getHistoryByOrderId(orderId);
+		History history = bookService.orderIdをもとに、注文履歴を取得するメソッド;
 		model.addAttribute("orderId", orderId);
 		model.addAttribute("items", history.getItems());
 		model.addAttribute("customer", history.getCustomer());
@@ -123,7 +131,7 @@ public class BookController {
 	@GetMapping("history/{order-id}/delete")
 	//	URLパスの中にある変数を取得
 	public String deleteOrder(@PathVariable("order-id") Integer orderId, RedirectAttributes attributes) {
-		bookService.deleteOrderByOrderId(orderId);
+		bookService.orderIdをもとに、注文を取り消すメソッド;
 		attributes.addFlashAttribute("message", "注文番号：" + orderId + "の注文が取り消されました。");
 		return "redirect:/mukunashi-bookstore";
 	}
