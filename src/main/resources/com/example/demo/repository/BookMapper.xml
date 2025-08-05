@@ -2,19 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.repository.BookMapper">
 
+<!--以下を記述してresultMapを完成させてみてください-->
 	<resultMap id="BookStockMap"
-		type="com.example.demo.entity.BookStock">
+		type="">
 <!--	idカラムはstock_numが主キーに設定されないようにするためのダミー-->
 		<id property="id" column="id"/>
-		<result property="stockNum" column="stock_num" />
-		<association property="book"
-			javaType="com.example.demo.entity.Book">
-			<id property="isbn" column="isbn" />
-			<result property="title" column="title" />
-			<result property="price" column="price" />
-			<result property="publisher" column="publisher" />
-			<result property="published" column="published" />
-		</association>
 	</resultMap>
 	
 	<resultMap id="OrderHistoryMap" type="com.example.demo.entity.History">
@@ -39,7 +31,7 @@
 		</collection>
 	</resultMap>
 	
-	<select id="selectAll" resultMap="BookStockMap">
+	<select id="" <!-- ここにresultMapを記述 -->>
 		SELECT
 		  bs.stock_num
 		  ,bk.isbn
@@ -54,7 +46,7 @@
 		;
 	</select>
 	
-	<select id="select" parameterType="String" resultType="com.example.demo.entity.Book">
+	<select id="select" <!-- ここにparameterTypeを記述--> <!--  ここにresultTypeを記述-->>
 		SELECT
 		  isbn
 		  ,title
@@ -128,6 +120,7 @@
 		;
 	</select>
 	
+<!--	引数（とプレースホルダ）が複数ある場合は、parameterTypeは記述できない-->
 	<update id="update">
 		UPDATE
 		  book_stocks

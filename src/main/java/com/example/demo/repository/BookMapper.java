@@ -21,8 +21,18 @@ public interface BookMapper {
 	Book select(String isbn);
 	
 	Integer selectStockNum(String isbn);
-	
-	void update(@Param("isbn")String isbn, @Param("updatedStockNum") Integer updatedStockNum);
+
+//	引数が二つあります。以下のクエリ文や43行目のselectOrderIdメソッドを参考に、引数を記述してみてください
+	void update();
+//	<update id="update">
+//	UPDATE
+//	  book_stocks
+//	SET
+//	  stock_num = #{updatedStockNum}
+//	WHERE
+//	  isbn = #{isbn}
+//	;
+//	</update>
 
 	void insertCustomer(Customer customer);
 
