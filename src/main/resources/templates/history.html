@@ -15,9 +15,9 @@
 	<header>
 		<h1>椋梨書店</h1>
 	</header>
-	<h2>注文履歴</h2>
 	<div class="container">
-		<a th:href="@{/kadai/bookController}">戻る</a>
+		<h2>注文履歴</h2>
+		<a th:href="@{/mukunashi-bookstore}">戻る</a>
 		<table class="table table-bordered">
 			<thead>
 				<tr>
@@ -52,6 +52,13 @@
 			</tbody>
 		</table>
 
+		<table class="table table-bordered">
+			<tr>
+				<th>注文日時</th>
+				<td th:text="${#temporals.format(orderDateTime,'yyyy/MM/dd HH:mm:ss')}"></td>
+			</tr>
+		</table>
+
 		<h3>お届け先</h3>
 		<table class="table table-bordered">
 			<tr>
@@ -71,7 +78,7 @@
 				<td th:text="${customer.address}"></td>
 			</tr>
 		</table>
-		<a th:href="@{/kadai/bookController/history/{order-id}/delete(order-id = ${orderId})}">
+		<a th:href="@{/mukunashi-bookstore/history/{order-id}/delete(order-id = ${orderId})}">
 			注文取り消し
 		</a>
 	</div>

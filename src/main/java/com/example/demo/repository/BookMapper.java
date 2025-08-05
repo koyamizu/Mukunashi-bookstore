@@ -30,7 +30,7 @@ public interface BookMapper {
 
 	void insertOrder(Integer customerId);
 
-	Integer selectOrderId(@Param("customerId") Integer customerId,@Param("orderDate") LocalDate orderDate);
+	List<Integer> selectOrderId(@Param("customerId") Integer customerId,@Param("orderDate") LocalDate orderDate);
 
 	void insertItems(@Param("orderId") Integer orderId, @Param("itemSet") Set<Entry<Book, Integer>> itemSet);
 

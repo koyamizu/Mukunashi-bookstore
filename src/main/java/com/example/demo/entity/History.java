@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -14,4 +15,5 @@ public class History {
 	private Integer orderId;
 	private Customer customer;
 	private List<Item> items;
+	private LocalDateTime orderDateTime;
 }

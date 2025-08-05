@@ -19,6 +19,7 @@
 	
 	<resultMap id="OrderHistoryMap" type="com.example.demo.entity.History">
 		<id property="orderId" column="order_id"/>
+		<result property="orderDateTime" column="created_at"/>
 		<association property="customer" javaType="com.example.demo.entity.Customer">
 			<id property="id" column="customer_id"/>
 			<result property="name" column="name"/>
@@ -87,7 +88,7 @@
 		;
 	</select>
 		
-	<select id="selectOrderId">
+	<select id="selectOrderId" resultType="Integer">
 		SELECT
 		  order_id
 		FROM
@@ -95,13 +96,15 @@
 		WHERE
 		  customer_id = #{customerId}
 		  AND
-		  CAST(created_at AS DATE) = #{orderDate};
+		  CAST(created_at AS DATE) = #{orderDate}
+		ORDER BY order_id DESC
 		;
 	</select>
 	
 	<select id="selectOrderHistory" resultMap="OrderHistoryMap">
 		SELECT
 		  o.order_id
+		  ,o.created_at
 		  ,c.name
 		  ,c.tel
 		  ,c.post_num

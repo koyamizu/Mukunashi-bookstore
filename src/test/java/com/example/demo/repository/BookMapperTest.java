@@ -94,7 +94,7 @@ public class BookMapperTest {
 				+ "		  (?)\n"
 				+ "		;"
 				,2);
-		Integer actual=mapper.selectOrderId(2, LocalDate.now());
+		Integer actual=mapper.selectOrderId(2, LocalDate.now()).get(0);
 		assertThat(actual).isEqualTo(1);
 	}
 	

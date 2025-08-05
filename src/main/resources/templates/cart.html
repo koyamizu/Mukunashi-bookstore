@@ -20,7 +20,7 @@
 		<p th:if="${message}" th:text="${message}" class="text-primary">メッセージ</p>
 		<p th:if="${error_message}" th:text="${error_message}" class="text-danger">エラーメッセージ</p>
 
-		<a th:href="@{/kadai/bookController}">戻る</a>
+		<a th:href="@{/mukunashi-bookstore}">戻る</a>
 		<div th:if="${#maps.isEmpty(cart)}">
 			<p>カートに入っているものはありません</p>
 		</div>
@@ -53,32 +53,35 @@
 				</tbody>
 			</table>
 
-			<form th:action="@{/kadai/bookController/order/execute}" th:object="${customerForm}" class="container"
-				method="POST">
-				<p th:if="${#fields.hasErrors('*')}" th:each="err:${#fields.errors('*')}" th:text="${err}"
-					class="text-danger">
-					エラーメッセージ
-				</p>
+			<form th:action="@{/mukunashi-bookstore/order}" th:object="${customerForm}" class="container" method="POST">
 				<h3>お届け先</h3>
 				<div class="row">
 					<div class="col-sm">
 						<label for="name" class="form-label">お名前</label>
 						<input type="text" th:field="*{name}" class="form-control" placeholder="例：田中あさひ">
+						<p th:if="${#fields.hasErrors('name')}" th:each="err:${#fields.errors('name')}"
+							th:text="${err}" class="text-danger">エラーメッセージ</p>
 					</div>
 					<div class="col-sm">
 						<label for="tel" class="form-label">電話番号</label>
 						<input type="text" th:field="*{tel}" class="form-control" placeholder="例：030-1234-5678"></input>
+						<p th:if="${#fields.hasErrors('tel')}" th:each="err:${#fields.errors('tel')}"
+							th:text="${err}" class="text-danger">エラーメッセージ</p>
 					</div>
 				</div>
 				<div class="col-sm-2">
 					<label for="postNum" class="form-label">郵便番号</label>
 					<input type="text" th:field="*{postNum}" class="form-control" placeholder="例：101-1234"></input>
 				</div>
+				<p th:if="${#fields.hasErrors('postNum')}" th:each="err:${#fields.errors('postNum')}"
+					th:text="${err}" class="text-danger">エラーメッセージ</p>
 				<div class="col-sm">
 					<label for="address" class="form-label">住所</label>
 					<input type="text" th:field="*{address}" class="form-control"
 						placeholder="例：東京都西区椋梨2-1-4 ミルプレス椋梨203号室"></input>
 				</div>
+				<p th:if="${#fields.hasErrors('address')}" th:each="err:${#fields.errors('address')}"
+					th:text="${err}" class="text-danger">エラーメッセージ</p>
 				<input type="submit" value="注文確定" class="mt-3">
 			</form>
 		</div>

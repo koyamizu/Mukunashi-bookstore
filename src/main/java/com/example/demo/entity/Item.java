@@ -12,7 +12,7 @@ public class Item {
 	private Book book;
 	private Integer num;
 	
-	public Boolean isValidate(int stockNum) {
+	public Boolean isValidate(Integer stockNum) {
 		return this.num <= stockNum;
 	}
 }

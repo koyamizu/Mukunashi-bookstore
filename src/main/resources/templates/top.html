@@ -39,17 +39,17 @@
 					<td th:text="*{book.published}"></td>
 					<td th:text="*{stockNum}"></td>
 					<td>
-						<form method="post" th:action="@{/kadai/bookController/add}">
+						<form method="post" th:action="@{/mukunashi-bookstore/add}">
 							<input type="hidden" name="isbn" th:value="${bookStock.book.isbn}">
-							<input type="text" name="num" size="3" required  class="mx-2">
+							<input type="number" name="num" size="3" required  class="mx-2">
 							<input type="submit" value="カートに入れる">
 						</form>
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		<a th:href="@{/kadai/bookController/order}">注文画面へ</a>
-		<form th:action="@{/kadai/bookController/history}" method="GET">
+		<a th:href="@{/mukunashi-bookstore/cart}">注文画面へ</a>
+		<form th:action="@{/mukunashi-bookstore/history}" method="GET">
 			<label for="order-id">注文番号：</label>
 			<input type="text" id="order-id" name="order-id" required></input>
 			<input type="submit" value="注文履歴を表示"></input>

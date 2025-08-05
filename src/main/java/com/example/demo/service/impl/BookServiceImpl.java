@@ -32,14 +32,15 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public List<BookStock> getAllBookStocks(Cart cart) throws IlligalActionException {
 
+		//		全ての書籍を取得
 		List<BookStock> bookStocks = bookMapper.selectAll();
-
+		//		カートが空の時は、そのまま書籍一覧を返す
 		if (Objects.equals(cart, null)) {
 			return bookStocks;
 		}
-
+		//		カートにある商品をマップとして取得
 		Map<Book, Integer> items = cart.getItems();
-		//		カートにある書籍に関しては、在庫数を減らして表示する
+		//		カートにすでに追加されている商品に関しては、追加した商品数を在庫数から減らす
 		for (BookStock bs : bookStocks) {
 			Book book = bs.getBook();
 			if (items.containsKey(book)) {
@@ -51,14 +52,19 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public Cart addItem(Item item, Cart cart) throws IlligalActionException {
+		//		cartがnullだった場合、Cart型のインスタンスを初期化する。NullPointerException対策。
 		if (Objects.equals(cart, null)) {
 			cart = new Cart();
 		}
+		//		この時点では、item.bookにはisbnにのみ値が格納されている
 		String isbn = item.getBook().getIsbn();
+		//		bookインスタンスの全てのフィールドに値を格納して初期化
 		Book book = bookMapper.select(isbn);
 		Integer stockNum = bookMapper.selectStockNum(isbn);
+		//		Null安全性を保証。NullPointerException対策。
 		Optional<Integer> cartNum = Optional.ofNullable(cart.getItems().get(book));
-
+		//		cartNumがnullだったら、cartNum = 0にする。
+		//		在庫数からカートに追加してある数を引き、カートに追加しようとする数が在庫数を越してないか確かめる
 		if (!item.isValidate(stockNum - cartNum.orElse(0))) {
 			throw new IlligalActionException("在庫数を超えています");
 		}
@@ -76,32 +82,46 @@ public class BookServiceImpl implements BookService {
 
 		Map<Book, Integer> items = cart.getItems();
 
+		//		Entry<Book,Integer>にすることで、キーを取り出すことができる
 		for (Map.Entry<Book, Integer> item : items.entrySet()) {
 			Book book = item.getKey();
 			Integer num = item.getValue();
-//			購入しようとする商品の在庫数をDBから取り出す
+			//			購入しようとする商品の在庫数をDBから取り出す
 			Integer stockNum = bookMapper.selectStockNum(book.getIsbn());
+			//			購入しようとする商品が在庫数を越していたら、例外放出
 			if (stockNum < num) {
 				throw new IlligalActionException("『" + book.getTitle() + "』は在庫がありません");
 			}
 			bookMapper.update(book.getIsbn(), stockNum - num);
 		}
 
-		bookMapper.insertCustomer(customer);
 		Integer customerId = bookMapper.selectCustomerId(customer);
+		if (Objects.equals(customerId, null)) {
+			//		客の情報を登録
+			bookMapper.insertCustomer(customer);
+			//		AUTO_INCREMENTによって生成された顧客IDを抽出
+			customerId = bookMapper.selectCustomerId(customer);
+		}
 
+		//		注文情報を登録
 		bookMapper.insertOrder(customerId);
-		Integer orderId = bookMapper.selectOrderId(customerId, LocalDate.now());
+		//		AUTO_INCREMENTによって生成された注文IDを抽出。
+		//		顧客IDと日付だけだと、複数の結果が戻ってくる場合があり得るのでリストで受け取る
+		List<Integer> orderIds = bookMapper.selectOrderId(customerId, LocalDate.now());
+		//		最新の注文の注文IDを取り出す
+		Integer latestOrderId = orderIds.get(0);
 
-		bookMapper.insertItems(orderId, cart.getItems().entrySet());
-		
-		return orderId;
+		//		注文した書籍を登録
+		//		注文IDと書籍は1対多の関係なので、注文IDを先に取得する必要がある
+		bookMapper.insertItems(latestOrderId, cart.getItems().entrySet());
+
+		return latestOrderId;
 	}
 
 	@Override
 	public History getHistoryByOrderId(Integer orderId) throws NoHistoryException {
-		History history=bookMapper.selectOrderHistory(orderId);
-		if(Objects.equals(history, null)) {
+		History history = bookMapper.selectOrderHistory(orderId);
+		if (Objects.equals(history, null)) {
 			throw new NoHistoryException("注文が存在しません");
 		}
 		return history;

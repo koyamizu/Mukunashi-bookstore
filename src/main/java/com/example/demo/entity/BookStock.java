@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 public class BookStock {
 
 	private Book book;
-	private int stockNum;
+	private Integer stockNum;
 
-	public void updateStockNum(int addNum) throws IlligalActionException {
+	public void updateStockNum(Integer addNum) throws IlligalActionException {
 		if (stockNum - addNum < 0) {
 			throw new IlligalActionException("在庫がありません");
 		}
