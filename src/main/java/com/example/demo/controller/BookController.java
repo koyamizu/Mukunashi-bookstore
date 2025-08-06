@@ -73,13 +73,11 @@ public class BookController {
 	}
 
 	@GetMapping("cart")
-	public String showCart(@Validated CustomerForm customerForm,BindingResult bindingResult,
+	public String showCart(@Validated CustomerForm customerForm, BindingResult bindingResult,
 			Model model, HttpSession session) throws IlligalActionException {
-		
-		if(bindingResult.hasErrors()) {
-			Cart cart = (Cart) session.getAttribute("cart");
-			List<BookStock> bookStocks = bookService.cartの情報をもとに、全ての書籍を取得するメソッド;
-			model.addAttribute("bookStocks", bookStocks);
+
+		if (bindingResult.hasErrors()) {
+			//（中略）
 			return "top";
 		}
 		//		sessionで保持していた、カートにある商品情報を取り出す。
@@ -95,9 +93,7 @@ public class BookController {
 			RedirectAttributes attributes, HttpSession session, Model model) throws IlligalActionException {
 		//		入力にエラーがあったとき
 		if (bindingResult.hasErrors()) {
-			Cart cart = (Cart) session.getAttribute("cart");
-			model.addAttribute("cart", cart);
-			model.addAttribute("customerForm", customerForm);
+			//（中略）
 			return "cart";
 		}
 
