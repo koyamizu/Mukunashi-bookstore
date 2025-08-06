@@ -86,9 +86,9 @@ public class BookServiceImpl implements BookService {
 		for (Map.Entry<Book, Integer> item : items.entrySet()) {
 			Book book = item.getKey();
 			Integer num = item.getValue();
-			//			購入しようとする商品の在庫数をDBから取り出す
+			//			購入しようとする書籍の在庫数をDBから取り出す
 			Integer stockNum = bookMapper.selectStockNum(book.getIsbn());
-			//			購入しようとする商品が在庫数を越していたら、例外放出
+			//			購入しようとする書籍が在庫数を越していたら、例外放出
 			if (stockNum < num) {
 				throw new IlligalActionException("『" + book.getTitle() + "』は在庫がありません");
 			}

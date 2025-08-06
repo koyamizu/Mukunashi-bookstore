@@ -65,7 +65,7 @@ public class BookController {
 	@PostMapping("add")
 	public String addItem(@Validated ItemForm itemForm,BindingResult bindingResult, HttpSession session,
 			RedirectAttributes attributes) {
-		//		値の正当性を判断。isValidateメソッドは独自に作成したItemFormクラスのインスタンスメソッド。
+		
 		if (bindingResult.hasErrors()) {
 			attributes.addFlashAttribute("error_message", bindingResult.getFieldError("num").getDefaultMessage());
 			return "redirect:/mukunashi-bookstore";
