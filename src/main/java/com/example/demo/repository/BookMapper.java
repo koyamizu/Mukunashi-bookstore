@@ -22,19 +22,20 @@ public interface BookMapper {
 	
 	Integer selectStockNum(String isbn);
 	
+	Integer selectCustomerId(Customer customer);
+	
+	List<Integer> selectOrderId(@Param("customerId") Integer customerId,@Param("orderDate") LocalDate orderDate);
+	
+	History selectOrderHistory(Integer orderId);
+	
+	void insertOrder(Integer customerId);
+	
+	void insertItems(@Param("orderId") Integer orderId, @Param("itemSet") Set<Entry<Book, Integer>> itemSet);
+	
+	void insertCustomer(Customer customer);
+	
 	void update(@Param("isbn")String isbn, @Param("updatedStockNum") Integer updatedStockNum);
 
-	void insertCustomer(Customer customer);
-
-	Integer selectCustomerId(Customer customer);
-
-	void insertOrder(Integer customerId);
-
-	List<Integer> selectOrderId(@Param("customerId") Integer customerId,@Param("orderDate") LocalDate orderDate);
-
-	void insertItems(@Param("orderId") Integer orderId, @Param("itemSet") Set<Entry<Book, Integer>> itemSet);
-
-	History selectOrderHistory(Integer orderId);
-
 	void deleteOrder(Integer orderId);
+	
 }
