@@ -5,7 +5,7 @@
 	<resultMap id="BookStockMap"
 		type="com.example.demo.entity.BookStock">
 <!--	idカラムはstock_numが主キーに設定されないようにするためのダミー-->
-		<id property="id" column="id"/>
+		<id property="dummy" column="dummy"/>
 		<result property="stockNum" column="stock_num" />
 		<association property="book"
 			javaType="com.example.demo.entity.Book">
@@ -28,6 +28,7 @@
 			<result property="address" column="address"/>
 		</association>
 		<collection property="items" ofType="com.example.demo.entity.Item">
+			<id property="item_id" column="itemId"/>
 			<result property="num" column="num"/>
 			<association property="book" javaType="com.example.demo.entity.Book">
 				<id property="isbn" column="isbn" />

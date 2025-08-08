@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Item {
 
+	private Integer itemId;
 	private Book book;
 	private Integer num;
 	
