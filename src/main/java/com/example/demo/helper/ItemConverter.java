@@ -11,6 +11,6 @@ public class ItemConverter {
 		Book book=new Book();
 		book.setIsbn(form.getIsbn());
 		
-		return new Item(book,form.getNum());
+		return new Item(null,book,form.getNum());
 	}
 }
