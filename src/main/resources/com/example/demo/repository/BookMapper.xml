@@ -28,7 +28,7 @@
 			<result property="address" column="address"/>
 		</association>
 		<collection property="items" ofType="com.example.demo.entity.Item">
-			<id property="item_id" column="itemId"/>
+			<id property="itemId" column="item_id"/>
 			<result property="num" column="num"/>
 			<association property="book" javaType="com.example.demo.entity.Book">
 				<id property="isbn" column="isbn" />
@@ -115,6 +115,7 @@
 		  ,b.price
 		  ,b.publisher
 		  ,b.published
+		  ,item_id
 		  ,i.num
 		FROM
 		  order_histories AS o
