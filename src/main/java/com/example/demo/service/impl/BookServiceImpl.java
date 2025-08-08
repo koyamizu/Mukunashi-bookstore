@@ -33,7 +33,7 @@ public class BookServiceImpl implements BookService {
 	public List<BookStock> getAllBookStocks(Cart cart) throws IlligalActionException {
 
 		//		全ての書籍を取得
-		List<BookStock> bookStocks = bookMapper.selectAll();
+		List<BookStock> bookStocks = bookMapper.戻り値がBookStockリストで、「全ての書籍の在庫を抽出するメソッド」;
 		//		カートが空の時は、そのまま書籍一覧を返す
 		if (Objects.equals(cart, null)) {
 			return bookStocks;
@@ -59,8 +59,8 @@ public class BookServiceImpl implements BookService {
 		//		この時点では、item.bookにはisbnにのみ値が格納されている
 		String isbn = item.getBook().getIsbn();
 		//		bookインスタンスの全てのフィールドに値を格納して初期化
-		Book book = bookMapper.select(isbn);
-		Integer stockNum = bookMapper.selectStockNum(isbn);
+		Book book = bookMapper.戻り値がBookで、「isbnコードをもとに、書籍を抽出するメソッド」;
+		Integer stockNum = bookMapper.戻り値がIntegerで、「isbnコードをもとに、在庫数を抽出するメソッド」;
 		//		Null安全性を保証。NullPointerException対策。
 		Optional<Integer> cartNum = Optional.ofNullable(cart.getItems().get(book));
 		//		cartNumがnullだったら、cartNum = 0にする。
@@ -87,7 +87,7 @@ public class BookServiceImpl implements BookService {
 			Book book = item.getKey();
 			Integer num = item.getValue();
 			//			購入しようとする書籍の在庫数をDBから取り出す
-			Integer stockNum = bookMapper.selectStockNum(book.getIsbn());
+			Integer stockNum = bookMapper.戻り値がIntegerで、「isbnコードをもとに、在庫数を抽出するメソッド」;
 			//			購入しようとする書籍が在庫数を越していたら、例外放出
 			if (stockNum < num) {
 				throw new IlligalActionException("『" + book.getTitle() + "』は在庫がありません");
@@ -98,7 +98,7 @@ public class BookServiceImpl implements BookService {
 		Integer customerId = bookMapper.selectCustomerId(customer);
 		if (Objects.equals(customerId, null)) {
 			//		客の情報を登録
-			bookMapper.insertCustomer(customer);
+			bookMapper.Customerクラスのオブジェクトを挿入するメソッド;
 			//		AUTO_INCREMENTによって生成された顧客IDを抽出
 			customerId = bookMapper.selectCustomerId(customer);
 		}

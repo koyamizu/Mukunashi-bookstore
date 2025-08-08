@@ -2,19 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.repository.BookMapper">
 
+<!--以下を記述してresultMapを完成させてみてください-->
 	<resultMap id="BookStockMap"
-		type="com.example.demo.entity.BookStock">
+		type="<!-- ここにパッケージ名＋クラス名を記述 -->>">
 <!--	idカラムはstock_numが主キーに設定されないようにするためのダミー-->
-		<id property="dummy" column="dummy"/>
-		<result property="stockNum" column="stock_num" />
-		<association property="book"
-			javaType="com.example.demo.entity.Book">
-			<id property="isbn" column="isbn" />
-			<result property="title" column="title" />
-			<result property="price" column="price" />
-			<result property="publisher" column="publisher" />
-			<result property="published" column="published" />
-		</association>
+		<id property="id" column="id"/>
+		<!-- 
+		
+		ここにresultMapの設定を記述いきます
+		
+		 -->
 	</resultMap>
 	
 	<resultMap id="OrderHistoryMap" type="com.example.demo.entity.History">
@@ -28,7 +25,6 @@
 			<result property="address" column="address"/>
 		</association>
 		<collection property="items" ofType="com.example.demo.entity.Item">
-			<id property="item_id" column="itemId"/>
 			<result property="num" column="num"/>
 			<association property="book" javaType="com.example.demo.entity.Book">
 				<id property="isbn" column="isbn" />
@@ -40,7 +36,7 @@
 		</collection>
 	</resultMap>
 	
-	<select id="selectAll" resultMap="BookStockMap">
+	<select id="ここにメソッド名を記述" <!-- ここにresultMapを記述 -->>
 		SELECT
 		  bs.stock_num
 		  ,bk.isbn
@@ -55,7 +51,7 @@
 		;
 	</select>
 	
-	<select id="select" parameterType="String" resultType="com.example.demo.entity.Book">
+	<select id="ここにメソッド名を記述" <!-- ここにparameterTypeを記述--> <!--  ここにresultTypeを記述-->>
 		SELECT
 		  isbn
 		  ,title
@@ -69,7 +65,7 @@
 		;
 	</select>
 	
-	<select id="selectStockNum" parameterType="String">
+	<select id="ここにメソッド名を記述" <!-- ここにparameterTypeを記述-->>
 		SELECT
 		  stock_num
 		FROM
@@ -129,6 +125,7 @@
 		;
 	</select>
 	
+<!--	引数（とプレースホルダ）が複数ある場合は、parameterTypeは記述できない-->
 	<update id="update">
 		UPDATE
 		  book_stocks
@@ -139,13 +136,7 @@
 		;
 	</update>
 	
-	<insert id="insertCustomer" parameterType="com.example.demo.entity.Customer">
-		INSERT INTO
-		  customers(name,tel,post_num,address)
-		VALUES
-		  (#{name},#{tel},#{postNum},#{address})
-		;
-	</insert>
+<!--	Customerクラスのオブジェクトを挿入するSQLおよびMapperファイルの設定を記述-->
 	
 	<insert id="insertOrder" parameterType="Integer">
 		INSERT INTO
