@@ -13,6 +13,6 @@ public class ItemForm {
 
 	private String isbn;
 	@Min(value = 1,message="1以上の数を入力してください")
-	private int num;
+	private Integer num;
 
 }

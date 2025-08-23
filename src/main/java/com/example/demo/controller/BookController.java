@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,9 +54,10 @@ public class BookController {
 			List<BookStock> bookStocks = bookService.getAllBookStocks(cart);
 			//			modelに格納
 			model.addAttribute("bookStocks", bookStocks);
-			//			在庫がないとき、bookSerivce.getAllBookStocks()から例外（IlligalActionException）放出
+			//			在庫の取得に失敗したとき、bookSerivce.getAllBookStocks()から例外（IlligalActionException）放出
 		} catch (IlligalActionException e) {
 			attributes.addFlashAttribute("error_message", e.getMessage());
+			return "redirect:/mukunashi-bookstore";
 		}
 		return "top";
 	}
@@ -153,9 +153,9 @@ public class BookController {
 		return "history";
 	}
 
-	@GetMapping("history/{order-id}/delete")
+	@PostMapping("delete")
 	//	URLパスの中にある変数を取得
-	public String deleteOrder(@PathVariable("order-id") Integer orderId, RedirectAttributes attributes) {
+	public String deleteOrder(@RequestParam("order-id") Integer orderId, RedirectAttributes attributes) {
 		bookService.deleteOrderByOrderId(orderId);
 		attributes.addFlashAttribute("message", "注文番号：" + orderId + "の注文が取り消されました。");
 		return "redirect:/mukunashi-bookstore";

@@ -78,9 +78,10 @@
 				<td th:text="${customer.address}"></td>
 			</tr>
 		</table>
-		<a th:href="@{/mukunashi-bookstore/history/{order-id}/delete(order-id = ${orderId})}">
-			注文取り消し
-		</a>
+		<form th:action="@{/mukunashi-bookstore/delete}" method="post">
+			<input type="hidden" name="order-id" th:value="${orderId}"/>
+			<input type="submit" value="注文取り消し" class="mt-3"/>
+		</form>
 	</div>
 </body>
 
