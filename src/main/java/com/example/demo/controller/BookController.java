@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -153,9 +154,9 @@ public class BookController {
 		return "history";
 	}
 
-	@PostMapping("delete")
+	@PostMapping("delete/{order-id}")
 	//	URLパスの中にある変数を取得
-	public String deleteOrder(@RequestParam("order-id") Integer orderId, RedirectAttributes attributes) {
+	public String deleteOrder(@PathVariable("order-id") Integer orderId, RedirectAttributes attributes) {
 		bookService.deleteOrderByOrderId(orderId);
 		attributes.addFlashAttribute("message", "注文番号：" + orderId + "の注文が取り消されました。");
 		return "redirect:/mukunashi-bookstore";
